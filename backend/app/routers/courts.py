@@ -275,7 +275,6 @@ async def auto_discover_courts(
     radius_meters: int = Query(6000),
     pool: asyncpg.Pool = Depends(get_db_pool)
 ):
-    # Zapytanie wyciąga węzły i obrysy poligonów (way) wraz z automatyczną centroidą (out center)
     query = f"""
     [out:json][timeout:25];
     (

@@ -22,7 +22,6 @@ OVERPASS_MIRRORS = [
 ]
 
 
-# Pobieranie boisk w zadanym promieniu (domyślnie 5 km)
 @router.get("/api/courts/nearby", response_model=List[CourtResponse])
 async def get_nearby_courts(
     lat: float = Query(...),
@@ -79,7 +78,7 @@ async def get_nearby_courts(
         return [dict(r) for r in records]
 
 
-# Zgłaszanie nowego boiska wraz ze zdjęciami weryfikacyjnymi (dzikie boiska / brakujące)
+
 @router.post("/api/courts", status_code=status.HTTP_201_CREATED)
 async def create_court(
     name: str = Form(...),
@@ -152,7 +151,7 @@ async def create_court(
     }
 
 
-# Weryfikacja i moderacja zgłoszeń boisk (tylko administrator)
+
 @router.patch("/api/admin/courts/{court_id}/status")
 async def update_court_status(
     court_id: int,
@@ -175,7 +174,6 @@ async def update_court_status(
             return {"message": "Boisko zostalo pomyslnie zweryfikowane."}
 
 
-# Check-in (weryfikacja geofencingu 75 m i przyznanie 25 XP)
 @router.post("/api/check-in")
 async def check_in(
     req: CheckInRequest, 
@@ -226,7 +224,6 @@ async def check_in(
         return {"message": "Zameldowano pomyslnie. Przyznano 25 punktow XP.", "distance_meters": round(distance)}
 
 
-# Pobieranie zaplanowanych meczów dla danego boiska
 @router.get("/api/courts/{court_id}/matches", response_model=List[MatchResponse])
 async def get_court_matches(
     court_id: int, 
@@ -267,7 +264,7 @@ async def get_court_matches(
         return results
 
 
-# Automatyczne wykrywanie boisk (OpenStreetMap + PostGIS centroidy)
+
 @router.post("/api/courts/auto-discover")
 async def auto_discover_courts(
     lat: float = Query(...),

@@ -39,7 +39,7 @@ MISSING_COURTS = [
 async def seed_remaining():
     conn = await asyncpg.connect(**DB_CONFIG)
 
-    # Pobieramy dopuszczalne wartości dla typów nawierzchni
+
     rows = await conn.fetch("""
         SELECT e.enumlabel
         FROM pg_type t

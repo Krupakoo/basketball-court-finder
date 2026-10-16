@@ -1,7 +1,6 @@
 -- 1. Rozszerzenie przestrzenne PostGIS
 CREATE EXTENSION IF NOT EXISTS postgis;
 
--- Czyszczenie starych tabel przy resecie (kolejność ze względu na klucze obce)
 DROP TABLE IF EXISTS lobby_participants CASCADE;
 DROP TABLE IF EXISTS lobbies_3x3 CASCADE;
 DROP TABLE IF EXISTS check_ins CASCADE;
@@ -47,12 +46,10 @@ CREATE TABLE courts (
     has_lighting BOOLEAN DEFAULT FALSE,
     is_fenced BOOLEAN DEFAULT TRUE,
     created_by_user_id INT REFERENCES users(id) ON DELETE SET NULL,
-    -- Typ GEOGRAPHY(Point, 4326): współrzędne WGS84 (długość, szerokość geograficzna)
     location GEOGRAPHY(Point, 4326) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indeks przestrzenny GIST - kluczowy dla szybkiego wyszukiwania w promieniu (ST_DWithin)
 CREATE INDEX idx_courts_location ON courts USING GIST (location);
 
 -- 5. Monitorowanie obłożenia w czasie rzeczywistym (Check-In)
@@ -97,18 +94,13 @@ CREATE TABLE court_reviews (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- ==========================================
--- DANE TESTOWE (SEED DATA)
--- ==========================================
 
--- Dodanie użytkowników testowych
 INSERT INTO users (username, email, password_hash, xp_points, player_level) VALUES
 ('jordan23', 'jordan@example.com', 'hash_test_1', 450, 3),
 ('kobe24', 'kobe@example.com', 'hash_test_2', 120, 1),
 ('lebron6', 'lebron@example.com', 'hash_test_3', 950, 5);
 
--- Dodanie testowych boisk (ST_SetSRID(ST_MakePoint(longitude, latitude), 4326))
--- Uwaga: PostGIS przyjmuje kolejność (długość geograficzna X, szerokość geograficzna Y)
+
 INSERT INTO courts (name, description, surface, rim_type, net_type, backboard, hoops_count, has_lighting, is_fenced, created_by_user_id, location) VALUES
 (
     'Boisko Orlik - Park Jordana', 
@@ -150,7 +142,6 @@ INSERT INTO courts (name, description, surface, rim_type, net_type, backboard, h
     ST_SetSRID(ST_MakePoint(20.6033, 49.9691), 4326)::geography
 );
 
--- Przykładowy aktywny check-in
 INSERT INTO check_ins (court_id, user_id, checked_in_at, expires_at, is_active) VALUES
 (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '60 minutes', TRUE),
 (1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '45 minutes', TRUE);

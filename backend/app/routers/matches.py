@@ -51,7 +51,6 @@ async def get_court_matches(
             results.append(d)
         return results
 
-# Zachowujemy też pierwotny alias ścieżki dla zgodności wstecznej z frontem
 @router.get("/../courts/{court_id}/matches", response_model=List[MatchResponse], include_in_schema=False)
 async def get_court_matches_alias(
     court_id: int, 

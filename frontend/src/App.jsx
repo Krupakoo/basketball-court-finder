@@ -12,7 +12,7 @@ import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import "./App.css";
 
-// Dynamiczny wskaźnik pozycji gracza ze strzałką kierunkową (azymut)
+
 const createRotatedUserIcon = (heading) => {
   return L.divIcon({
     className: "user-heading-marker",
@@ -42,10 +42,8 @@ const createRotatedUserIcon = (heading) => {
   });
 };
 
-// Nowoczesny wektorowy generator markerów boisk ze ścisłym punktem kotwiczenia (iconAnchor)
 const createCourtMarkerIcon = (court) => {
   const isPending = court.status === "pending";
-  // Wyróżnione obiekty: min. 2 kosze i oświetlenie lub aktywni gracze na obiekcie
   const isFeatured = !isPending && ((court.hoops_count >= 2 && court.has_lighting) || court.active_players_count > 0);
 
   if (isPending) {
@@ -83,12 +81,11 @@ const createCourtMarkerIcon = (court) => {
         </div>
       `,
       iconSize: [160, 56],
-      iconAnchor: [80, 40], // Środek dolnego kółka z ikoną
+      iconAnchor: [80, 40], 
       popupAnchor: [0, -42],
     });
   }
 
-  // Zwykłe standardowe boisko
   return L.divIcon({
     className: "custom-court-marker",
     html: `
@@ -126,11 +123,11 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-  // Filtry
+
   const [filterLighting, setFilterLighting] = useState(false);
   const [filterRim, setFilterRim] = useState("");
 
-  // Modale
+
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [authForm, setAuthForm] = useState({ username: "", email: "", password: "" });
@@ -458,7 +455,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* Pasek nawigacyjny */}
+      {}
       <header className="app-header">
         <div className="brand-section">
           <div className="brand-logo">
@@ -473,7 +470,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Filtry */}
+        {}
         <div className="filters-bar">
           <label className={`filter-chip ${filterLighting ? "active" : ""}`}>
             <input
@@ -497,7 +494,7 @@ export default function App() {
           </select>
         </div>
 
-        {/* Panel użytkownika */}
+        {}
         <div className="user-panel">
           <button onClick={fetchLeaderboard} className="btn-leaderboard">
             Ranking graczy
@@ -527,14 +524,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* Powiadomienie toast */}
+      {}
       {notification && (
         <div className="notification-toast">
           <span>•</span> {notification}
         </div>
       )}
 
-      {/* Kontener Mapy z darmowym podkładem OpenStreetMap i filtrem dark-tiles */}
+      {}
       <div className="map-wrapper">
         <MapContainer
           center={[userLocation.lat, userLocation.lng]}
@@ -549,7 +546,7 @@ export default function App() {
           <RecenterMap lat={userLocation.lat} lng={userLocation.lng} />
           <MapClickHandler onMapClick={handleMapClick} />
 
-          {/* Znacznik pozycji użytkownika */}
+          {}
           {userLocation && (
             <Marker
               position={[userLocation.lat, userLocation.lng]}
@@ -569,7 +566,7 @@ export default function App() {
             </Marker>
           )}
 
-          {/* Znaczniki boisk w formacie SVG ze stabilnym zakotwiczeniem */}
+          {}
           {courts.map((court) => {
             const isPending = court.status === "pending";
             return (
@@ -645,7 +642,7 @@ export default function App() {
         </button>
       </div>
 
-      {/* Modal Meczów 3x3 */}
+      {}
       {activeCourtForMatches && (
         <div className="modal-overlay">
           <div className="modal-content wide">
@@ -716,7 +713,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Modal Autoryzacji */}
+      {}
       {isAuthOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -767,7 +764,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Modal Dodawania Boiska */}
+      {}
       {isAddCourtOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -866,7 +863,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Modal Rankingu */}
+      {}
       {isLeaderboardOpen && (
         <div className="modal-overlay">
           <div className="modal-content wide">

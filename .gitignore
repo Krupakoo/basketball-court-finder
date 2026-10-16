@@ -1,0 +1,13 @@
+venv/ 
+.venv/ 
+env/ 
+__pycache__/ 
+*.pyc 
+uploads/ 
+node_modules/ 
+build/ 
+dist/ 
+.vite/ 
+.env 
+.vscode/ 
+.idea/

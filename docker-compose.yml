@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: basketball_postgis
+    restart: always
+    environment:
+      POSTGRES_USER: basket_user
+      POSTGRES_PASSWORD: basket_password123
+      POSTGRES_DB: basketball_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgis_data:
